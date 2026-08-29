@@ -12,8 +12,9 @@ jobs:
       - run: echo "Hello, World!"
   docker-build:
     runs-on: self-hosted
-    env:
-      working-directory: ./CICD_Lab/Infrastructure
+    defaults:
+      run:
+        working-directory: ./CICD_Lab/Infrastructure
     steps:
       - uses: actions/checkout@v3
       - run: docker compose build nginx
