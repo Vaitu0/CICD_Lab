@@ -18,5 +18,5 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: docker compose build nginx
-      - run:docker compose up -d nginx
+      - run: docker compose up -d nginx
       - run: echo "nginx build complete"
