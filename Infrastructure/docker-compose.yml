@@ -7,7 +7,7 @@ services:
     container_name: nginx
     image: nginx-image:latest
     ports:
-      - "80:80"
+      - "${VPN_IP}:80:80"
       - "443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
