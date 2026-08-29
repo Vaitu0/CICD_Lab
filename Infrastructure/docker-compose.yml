@@ -72,4 +72,3 @@ volumes:
   nginx:
   zabbix-db-data:
 
-
