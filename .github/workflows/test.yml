@@ -1,12 +1,11 @@
 name: test1
 
 on:
-  workflow_dispach:
+  workflow_dispatch:
 
 jobs:
   test:
       runs-on: self-hosted
       steps:
-        - name: test
-          run: echo "Hello, World!"
+        - run: echo "Hello, World!"
 
