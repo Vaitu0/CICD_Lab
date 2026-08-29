@@ -1,7 +1,7 @@
 name: test1
 
 on:
-  workflow_dispatch:
+  push:
     branches:
       - main
 
@@ -12,8 +12,9 @@ jobs:
       - run: echo "Hello, World!"
   docker-build:
     runs-on: self-hosted
+    env:
+      working-directory: ./CICD_Lab/Infrastructure
     steps:
       - uses: actions/checkout@v3
-      - working-directory: ./CICD_Lab/Infrastructure
       - run: docker compose build nginx
       - run: echo "nginx build complete"
