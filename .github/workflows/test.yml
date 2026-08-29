@@ -16,7 +16,6 @@ jobs:
       run:
         working-directory: Infrastructure
     steps:
-      - uses: actions/checkout@v3
-      - run: ls -la && -la Infrastructure
+      - uses: actions/checkout@v7
       - run: docker compose build nginx
       - run: echo "nginx build complete"
