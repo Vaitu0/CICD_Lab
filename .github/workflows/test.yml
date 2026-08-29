@@ -1,9 +1,13 @@
 name: test1
 
 on:
-  pull_request:
-    branches:
-      - "main"
+  workflow_dispach:
+
 jobs:
   test:
-  
+    say-hello:
+      runs-on: self-hosted
+      steps:
+        - name: test
+          run: echo "Hello, World!"
+
