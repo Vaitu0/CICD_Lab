@@ -11,6 +11,5 @@ jobs:
   docker-build:
     runs-on: self-hosted
     steps:
-      - name: nginx-build
       - run: docker compose build nginx
       - run: echo "nginx build complete"
