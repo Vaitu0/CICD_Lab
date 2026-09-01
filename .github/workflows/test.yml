@@ -12,6 +12,8 @@ jobs:
       - run: echo "Hello, World!"
   docker-build:
     runs-on: self-hosted
+    env:
+      IMAGE_TAG: ${{ github.sha}}
     defaults:
       run:
         working-directory: Infrastructure
