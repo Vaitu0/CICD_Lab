@@ -5,7 +5,7 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     container_name: nginx
-    image: nginx-image:latest
+    image: nginx-image:${IMAGE_TAG}
     ports:
       - "${VPN_IP}:80:80"
       - "443:443"

@@ -17,7 +17,9 @@ jobs:
         working-directory: Infrastructure
     steps:
       - uses: actions/checkout@v7
-      - run: cp "$HOME/edu_lab/CICD_Lab/Infrastructure/.env" .env
-      - run: docker compose build nginx
-      - run: docker compose up -d nginx
-      - run: echo "nginx build complete"
+      - run: |
+          cp "$HOME/edu_lab/CICD_Lab/Infrastructure/.env" .env
+          docker compose build nginx
+          docker compose up -d nginx
+          echo "nginx build complete" 
+  
