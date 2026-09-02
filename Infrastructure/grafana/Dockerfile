@@ -1,3 +1,3 @@
-FROM grafana/grafana:${IMAGE_TAG}
+FROM grafana/grafana:11.5.2
 USER grafana
 
