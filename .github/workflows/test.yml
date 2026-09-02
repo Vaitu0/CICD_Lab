@@ -24,4 +24,6 @@ jobs:
           docker compose build nginx
           docker compose up -d nginx
           echo "nginx build complete" 
-  
+          docker compose build grafana
+          docker compose up -d grafana
+          echo "grafana build complete"
