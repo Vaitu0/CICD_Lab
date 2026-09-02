@@ -1,3 +1,3 @@
-FROM grafana/grafana:${GRAFANA_VERSION}
+FROM grafana/grafana:${IMAGE_TAG}
 USER grafana
 
