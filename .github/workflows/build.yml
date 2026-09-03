@@ -16,10 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: |
+          set -e
           cp "$HOME/edu_lab/CICD_Lab/Infrastructure/.env" .env
-          docker compose build nginx
-          docker compose up -d nginx
-          echo "nginx build complete" 
-          docker compose build grafana
-          docker compose up -d grafana
-          echo "grafana build complete"
+          docker compose build nginx grafana
+          docker compose up -d nginx grafana
+          echo "deploy complete successfully :)"
