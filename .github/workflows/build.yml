@@ -29,10 +29,12 @@ jobs:
           docker compose build nginx grafana
           docker compose up -d nginx grafana
 
-      - name: Health check nginx      
+      - name: Health check nginx 
+        run: |
           curl -sf --max-time 10 http://127.0.0.1/ > /dev/null
           echo "nginx health check passed"
 
       - name: Health check grafana
+        run: |
           curl -sf --max-time 10 http://127.0.0.1:3000/login > /dev/null
           echo "grafana health check passed"
