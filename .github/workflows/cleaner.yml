@@ -4,22 +4,20 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 0 0 * *'
-  branches:
-    - main
 
 jobs:
     cleaner:
       runs-on: self-hosted
-    defaults:
-      run: 
-        working-directory: Infrastructure
+      defaults:
+        run: 
+          working-directory: Infrastructure
 
-    steps:
-      - name: old images cleaner
-        run: |
-          docker image prune -a
-          echo "images cleaned"
-      - name: build cache cleaner    
-        run: |
-          docker builder prune
-          echo "build cache cleaned"
+      steps:
+        - name: old images cleaner
+          run: |
+            docker image prune -a
+            echo "images cleaned"
+        - name: build cache cleaner    
+          run: |
+            docker builder prune
+            echo "build cache cleaned"
