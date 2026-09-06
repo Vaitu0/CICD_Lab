@@ -20,20 +20,23 @@ jobs:
         working-directory: Infrastructure
     steps:
       - uses: actions/checkout@v7
+
       - name: Deploy
-      - run: |
+        run: |
           set -e
           cp "$HOME/edu_lab/CICD_Lab/Infrastructure/.env" .env
-          docker pull curlimages/curl:8.21.0
           docker compose build nginx grafana
           docker compose up -d nginx grafana
 
       - name: Health check nginx 
         run: |
-          curl -sf --max-time 10 http://127.0.0.1/ > /dev/null
+          docker run --rm --network infrastructure_default curlimages/curl:8.21.0 \
+           -sf --max-time 10 http://nginx/
           echo "nginx health check passed"
 
       - name: Health check grafana
         run: |
           curl -sf --max-time 10 http://127.0.0.1:3000/login > /dev/null
+          docker run --rm --network infrastructure_default curlimages/curl:8.21.0 \
+           -sf --max-time 10 http://grafana:3000/login
           echo "grafana health check passed"
