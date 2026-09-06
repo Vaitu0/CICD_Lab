@@ -20,7 +20,6 @@ jobs:
         working-directory: Infrastructure
     steps:
       - uses: actions/checkout@v7
-
       - name: Deploy
       - run: |
           set -e
