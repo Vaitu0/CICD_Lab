@@ -3,7 +3,7 @@ name: Docker cleaner
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 1 * * 1'  //every week on sunday at 1:00 AM
+    - cron: '0 1 * * 1'  #every week on sunday at 1:00 AM
 
 jobs:
     cleaner:
@@ -23,3 +23,5 @@ jobs:
           run: |
             docker network prune -f
             echo "networks cleaned"
+        
+      #check after with 'docker system df -h'
