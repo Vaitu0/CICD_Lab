@@ -2,6 +2,11 @@ name: Build containers
 
 on:
   push:
+    paths:
+      - Infrastructure/nginx/**
+      - Infrastructure/grafana/**
+      - Infrastructure/docker-compose.yml
+      - .github/workflows/build.yml
     branches:
       - main
 
@@ -20,4 +25,7 @@ jobs:
           cp "$HOME/edu_lab/CICD_Lab/Infrastructure/.env" .env
           docker compose build nginx grafana
           docker compose up -d nginx grafana
+          curl -sf --max-time 10 http://127.0.0.1/ > /dev/null
+          curl -sf --max-time 10 http://127.0.0.1:3000/ > /dev/null
+          echo "helth check passed"
           echo "deploy complete successfully :)"
