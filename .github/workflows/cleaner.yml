@@ -8,8 +8,6 @@ on:
 jobs:
     cleaner:
       runs-on: self-hosted
-          working-directory: Infrastructure
-
       steps:
         - name: old images cleaner
           run: |
