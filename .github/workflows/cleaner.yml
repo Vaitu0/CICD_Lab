@@ -17,6 +17,7 @@ jobs:
           run: |
             docker image prune -a
             echo "images cleaned"
+
         - name: build cache cleaner    
           run: |
             docker builder prune
