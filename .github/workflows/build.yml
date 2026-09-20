@@ -44,7 +44,7 @@ jobs:
       - name: Health check hellp app
         run: |
           curl -sf --max-time 10 http://127.0.0.1:5000/ > /dev/null
-          docker run -rm --network infrastructure_default curlimages/curl:8.21.0 \
+          docker run --rm --network infrastructure_default curlimages/curl:8.21.0 \
             -sf --max-time 10 http://hello-app:5000/
           echo "test hello-app health check passed"
           
