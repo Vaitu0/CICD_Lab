@@ -1,4 +1,4 @@
-from flask import Flask, jsonife
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
@@ -8,7 +8,7 @@ def home():
 
 @app.route('/health')
 def health():
-    return jsonife({"status": "ok"})
+    return jsonify({"status": "ok"})
 
 @app.route('/<name>')
 def user(name):
