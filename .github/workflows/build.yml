@@ -44,6 +44,6 @@ jobs:
       - name: Health check hello app
         run: |
           docker run --rm --network infrastructure_default curlimages/curl:8.21.0 \
-            -sf --max-time 10 http://hello-app:5000/
+            -sf --max-time 10 http://hello-app:5000/health
           echo "test hello-app health check passed"
           
