@@ -2,7 +2,7 @@ services:
   
   hello-app:
     build:
-      context: ../apps/test
+      context: ../apps/backend/test
       dockerfile: Dockerfile
     container_name: hello-app
     image: hello-app-image:${IMAGE_TAG}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CICD Lab — Hello</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <p class="brand">CICD Lab</p>
+      <h1>Hello from the frontend</h1>
+      <p class="lede">
+        Static HTML served by nginx, talking to your FastAPI app through the reverse proxy.
+      </p>
+    </header>
+
+    <main class="cards">
+      <section class="card">
+        <h2>API message</h2>
+        <p id="api-message" class="mono muted">Waiting…</p>
+        <button type="button" id="btn-hello" class="btn">Call GET /app/</button>
+      </section>
+
+      <section class="card">
+        <h2>Health</h2>
+        <p id="health-status" class="mono muted">Waiting…</p>
+        <button type="button" id="btn-health" class="btn">Call GET /app/health</button>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Backend path: <code>/app/</code> → <code>hello-app:5000</code></p>
+    </footer>
+  </div>
+</body>
+</html>
