@@ -31,6 +31,9 @@ services:
     image: grafana-image:${IMAGE_TAG}
     ports:
       - "${VPN_IP}:${GRAFANA_PORT}:3000"
+    environment:
+      - GF_SERVER_ROOT_URL=http://127.0.0.1/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
     volumes:
       - grafana-data:/var/lib/grafana
     restart: unless-stopped
