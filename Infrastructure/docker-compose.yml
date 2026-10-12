@@ -21,6 +21,7 @@ services:
       - "443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+      - ../apps/frontend:/usr/share/nginx/html:ro
     restart: unless-stopped
 
   grafana:

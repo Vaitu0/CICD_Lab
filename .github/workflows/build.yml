@@ -8,6 +8,7 @@ on:
       - Infrastructure/docker-compose.yml
       - .github/workflows/build.yml
       - apps/backend/**
+      - apps/frontend/**
     branches:
       - main
 
