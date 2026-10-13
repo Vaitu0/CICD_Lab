@@ -3,9 +3,9 @@ name: Build containers
 on:
   push:
     paths:
-      - Infrastructure/nginx/**
-      - Infrastructure/grafana/**
-      - Infrastructure/docker-compose.yml
+      - infrastructure/nginx/**
+      - infrastructure/grafana/**
+      - infrastructure/docker-compose.yml
       - .github/workflows/build.yml
       - apps/backend/**
       - apps/frontend/**
@@ -19,14 +19,14 @@ jobs:
       IMAGE_TAG: ${{ github.sha }}
     defaults:
       run:
-        working-directory: Infrastructure
+        working-directory: infrastructure
     steps:
       - uses: actions/checkout@v7
 
       - name: Deploy
         run: |
           set -e
-          cp "$HOME/edu_lab/CICD_Lab/Infrastructure/.env" .env
+          cp "$HOME/edu_lab/CICD_Lab/infrastructure/.env" .env
           docker compose build nginx grafana hello-app
           docker compose up -d nginx grafana hello-app
 
