@@ -3,7 +3,7 @@ name: Docker cleaner
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 1 * * 1'  #every week on sunday at 1:00 AM
+    - cron: '0 1 * * 1'  # every Monday 01:00 UTC
 
 jobs:
     cleaner:

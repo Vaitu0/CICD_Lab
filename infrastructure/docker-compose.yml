@@ -96,6 +96,5 @@ services:
 
 volumes:
   grafana-data:
-  nginx:
   zabbix-db-data:
 
