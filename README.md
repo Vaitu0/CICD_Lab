@@ -86,13 +86,21 @@ Grafana is configured with `GF_SERVER_SERVE_FROM_SUB_PATH=true` and `GF_SERVER_R
 
 Default Zabbix UI login is often `Admin` / `zabbix` — change it after first login.
 
-### Environment variables
+### Environment variables / secrets
 
-See `infrastructure/.env.example`. Never commit `.env`.
+1. Copy the template on the server:  
+   `cp infrastructure/.env.example infrastructure/.env`
+2. Fill in real values in `.env` only (gitignored).
+3. Never commit `.env`. The example file has **names and safe placeholders only**.
 
-Typical keys: `VPN_IP`, `APP_PORT`, `GRAFANA_PORT`, `ZABBIX_PORT`, `POSTGRES_*`, `IMAGE_TAG`.
+| Variable | Role |
+|----------|------|
+| `VPN_IP` | Host bind address (`127.0.0.1`, `0.0.0.0`, or LAN/VPN IP) |
+| `APP_PORT` / `GRAFANA_PORT` / `ZABBIX_PORT` | Published host ports |
+| `POSTGRES_*` | Zabbix database credentials |
+| `IMAGE_TAG` | Local/manual image tag (`dev`). **CI sets this to the git SHA** |
 
-`VPN_IP` controls which host address ports bind to (`0.0.0.0`, `127.0.0.1`, or a LAN/VPN IP).
+CI uses `docker compose --env-file $HOME/.../infrastructure/.env` so secrets stay in one place on the server and are **not** copied into the Actions work directory.
 
 ## CI/CD
 
@@ -102,10 +110,9 @@ Typical keys: `VPN_IP`, `APP_PORT`, `GRAFANA_PORT`, `ZABBIX_PORT`, `POSTGRES_*`,
 - **Runner:** `self-hosted`
 - **Steps:**
   1. Checkout
-  2. Copy host `.env` into the Compose project (secrets stay on the server)
-  3. `docker compose build` nginx, grafana, hello-app
-  4. `docker compose up -d` those services
-  5. Health checks on the Compose network (`curlimages/curl` → `nginx`, `grafana`, `hello-app`)
+  2. `docker compose --env-file` pointing at the server’s persistent `.env` (SHA tag from the job)
+  3. Build + `up -d` for nginx, grafana, hello-app
+  4. Health checks on the Compose network (`curlimages/curl` → `nginx`, `grafana`, `hello-app`)
 
 ### Cleaner (`.github/workflows/cleaner.yml`)
 
@@ -137,8 +144,8 @@ Manual and/or scheduled prune of unused Docker images/cache on the runner host (
 ## Roadmap / ideas
 
 - Wire frontend JS to call `/app/` and `/app/health`
-- Tighten secrets handling (less reliance on copying `.env` from `$HOME`)
 - Stop publishing backend/Grafana ports; expose only via nginx
+- Optional later: GitHub Actions secrets for non-homelab runners
 - Move the stack to a VPS; optional Terraform later
 - Container registry (e.g. GHCR)
 

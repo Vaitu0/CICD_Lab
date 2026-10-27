@@ -26,9 +26,14 @@ jobs:
       - name: Deploy
         run: |
           set -e
-          cp "$HOME/edu_lab/CICD_Lab/infrastructure/.env" .env
-          docker compose build nginx grafana hello-app
-          docker compose up -d nginx grafana hello-app
+          ENV_FILE="$HOME/edu_lab/CICD_Lab/infrastructure/.env"
+          if [ ! -f "$ENV_FILE" ]; then
+            echo "Missing $ENV_FILE — create it from .env.example on the server"
+            exit 1
+          fi
+          # Secrets stay on the host; IMAGE_TAG (job env / git SHA) overrides .env
+          docker compose --env-file "$ENV_FILE" build nginx grafana hello-app
+          docker compose --env-file "$ENV_FILE" up -d nginx grafana hello-app
 
       - name: Health check nginx 
         run: |
