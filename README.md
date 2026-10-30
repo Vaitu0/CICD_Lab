@@ -14,12 +14,13 @@ Self-hosted runner (SerwerPD)
     │  build → tag images with git SHA → deploy → health checks
     ▼
 Docker Compose
-    ├── nginx        :80   static frontend + reverse proxy
-    │                    /app/      → hello-app:5000
-    │                    /grafana/  → grafana:3000
-    ├── hello-app    FastAPI (Uvicorn)
-    ├── grafana      dashboards (Zabbix datasource)
-    └── zabbix-*     server, web, db, agent (monitoring)
+    ├── nginx        :80  (public)  static frontend + reverse proxy
+    │                    /          → apps/frontend
+    │                    /app/      → hello-app:5000   (internal only)
+    │                    /grafana/  → grafana:3000     (internal only)
+    ├── hello-app    FastAPI — no host port (expose 5000 on Compose network)
+    ├── grafana      dashboards — no host port (expose 3000 on Compose network)
+    └── zabbix-*     server, web, db, agent (still published on host ports)
 ```
 
 Images built by CI are tagged with `${{ github.sha }}` (e.g. `hello-app-image:<commit>`), not only `latest`.
@@ -71,16 +72,16 @@ cp .env.example .env
 docker compose up -d --build
 ```
 
-### Useful URLs (defaults when `VPN_IP=0.0.0.0`)
+### Useful URLs (when nginx listens on the host)
 
 | Service | URL |
 |---------|-----|
 | Frontend (nginx) | http://127.0.0.1/ |
-| API via proxy | http://127.0.0.1/app/ and `/app/health` |
-| API direct | http://127.0.0.1:5000/health |
-| Grafana via proxy | http://127.0.0.1/grafana/ |
-| Grafana direct | http://127.0.0.1:3000/ |
+| API (via nginx only) | http://127.0.0.1/app/ and `/app/health` |
+| Grafana (via nginx only) | http://127.0.0.1/grafana/ |
 | Zabbix UI | http://127.0.0.1:8080/ |
+
+**Port lock:** `hello-app` and `grafana` use `expose` only — they are reachable on the Compose network (and from nginx), **not** as `localhost:5000` / `localhost:3000` on the host. CI health checks still use `http://hello-app:5000` and `http://grafana:3000` inside that network.
 
 Grafana is configured with `GF_SERVER_SERVE_FROM_SUB_PATH=true` and `GF_SERVER_ROOT_URL` for the `/grafana/` path.
 
@@ -95,8 +96,9 @@ Default Zabbix UI login is often `Admin` / `zabbix` — change it after first lo
 
 | Variable | Role |
 |----------|------|
-| `VPN_IP` | Host bind address (`127.0.0.1`, `0.0.0.0`, or LAN/VPN IP) |
-| `APP_PORT` / `GRAFANA_PORT` / `ZABBIX_PORT` | Published host ports |
+| `VPN_IP` | Host bind for published ports (`127.0.0.1`, `0.0.0.0`, or LAN/VPN IP) |
+| `ZABBIX_PORT` | Zabbix web host port (still published) |
+| `APP_PORT` / `GRAFANA_PORT` | Optional leftovers in `.env`; **not** used for host publish after the port lock |
 | `POSTGRES_*` | Zabbix database credentials |
 | `IMAGE_TAG` | Local/manual image tag (`dev`). **CI sets this to the git SHA** |
 
@@ -138,13 +140,15 @@ Manual and/or scheduled prune of unused Docker images/cache on the runner host (
 - Image tagging with git SHA
 - Path-filtered workflows and post-deploy health checks
 - Reverse proxy (path-based routing, Grafana subpath)
+- Port lock: public entry via nginx only for app and Grafana
 - Separating app code (`apps/`) from infra (`infrastructure/`)
+- Frontend calling the API through the proxy (`script.js`)
 - Basic observability with Zabbix + Grafana
+- Secrets via server-side `.env` + Compose `--env-file` in CI
 
 ## Roadmap / ideas
 
-- Wire frontend JS to call `/app/` and `/app/health`
-- Stop publishing backend/Grafana ports; expose only via nginx
+- Proxy Zabbix under `/zabbix/` (and stop publishing `:8080` if desired)
 - Optional later: GitHub Actions secrets for non-homelab runners
 - Move the stack to a VPS; optional Terraform later
 - Container registry (e.g. GHCR)

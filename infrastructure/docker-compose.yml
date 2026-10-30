@@ -6,8 +6,8 @@ services:
       dockerfile: Dockerfile
     container_name: hello-app
     image: hello-app-image:${IMAGE_TAG}
-    ports:
-      - "${VPN_IP}:${APP_PORT}:5000"
+    expose:
+      - 5000
     restart: unless-stopped
 
   nginx:
@@ -30,8 +30,8 @@ services:
       dockerfile: Dockerfile
     container_name: grafana
     image: grafana-image:${IMAGE_TAG}
-    ports:
-      - "${VPN_IP}:${GRAFANA_PORT}:3000"
+    expose:
+      - 3000
     environment:
       - GF_SERVER_ROOT_URL=http://127.0.0.1/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
